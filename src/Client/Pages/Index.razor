@@ -1,0 +1,45 @@
+﻿@page "/"
+@using Domain 
+
+
+<h1>Snake Eyes</h1>
+
+Roll the dices but don't get Snake Eyes!
+
+<div>
+    <CDice Pips="@_game.Eye1" />
+    <CDice Pips="@_game.Eye2"></CDice>
+</div>
+<label>Total:</label> @_game.Total
+<br />
+<button @onclick="RollDices" disabled="@_game.HasSnakeEyes">Roll</button>
+<h4>Highscores</h4>
+<ol>
+    @foreach (var score in _game.HighScores.OrderByDescending(x => x))
+    {
+        <li>@score</li>
+    }
+</ol>
+
+@if (@_game.HasSnakeEyes)
+{
+    <button @onclick="Restart">Restart</button>
+    <div class="alert alert-danger" role="alert">
+        Oops, you did it again!
+    </div>
+}
+
+
+@code {
+    private Game _game = new Game();
+
+    async void RollDices()
+    {
+        _game.Play();
+    }
+
+    async void Restart()
+    {
+        _game.Restart();
+    }
+}
