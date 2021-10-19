@@ -31,6 +31,10 @@ namespace Domain
         }
         public void Play()
         {
+            if(HasSnakeEyes)
+            {
+                throw new InvalidOperationException("You cannot roll anymore!");
+            }
             _dice1.Roll();
             _dice2.Roll();
             if(HasSnakeEyes)
