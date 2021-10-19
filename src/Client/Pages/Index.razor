@@ -1,6 +1,30 @@
 ﻿@page "/"
 
-<h1>Hello, world!</h1>
+<h1>Snake Eyes</h1>
 
-Welcome to your new app.
+Roll the dices but don't get Snake Eyes!
 
+<h2>|@eye1|@eye2|</h2>
+<button @onclick="RollDices">Roll</button>
+<button @onclick="Restart" hidden="@alive">Restart</button>
+
+
+@code {
+    private bool alive = true;
+    private int eye1 = 6, eye2 = 6;
+
+    protected override async Task OnInitializedAsync()
+    {
+        //initialize some parts
+    }
+
+    async void RollDices()
+    {
+        //roll the dices
+    }
+
+    async void Restart()
+    {
+        //restart the dices
+    }
+}
