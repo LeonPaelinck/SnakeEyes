@@ -4,27 +4,54 @@
 
 Roll the dices but don't get Snake Eyes!
 
-<h2>|@eye1|@eye2|</h2>
-<button @onclick="RollDices">Roll</button>
-<button @onclick="Restart" hidden="@alive">Restart</button>
+<Dice Pips="@eye1"/>
+<Dice Pips="@eye2"></Dice>
+<br />
+<label>Total:</label> @total
+<br />
+<button @onclick="RollDices" disabled="@hasSnakeEyes">Roll</button>
+<h4>Highscores</h4>
+<ol>
+    @foreach (var score in @highscores.OrderByDescending(x => x))
+    {
+        <li>@score</li>
+    }
+</ol>
+
+@if (hasSnakeEyes)
+{
+    <button @onclick="Restart">Restart</button>
+    <div class="alert alert-danger" role="alert">
+        Oops, you did it again!
+    </div>
+}
 
 
 @code {
-    private bool alive = true;
-    private int eye1 = 6, eye2 = 6;
+    private bool hasSnakeEyes = false;
+    private int eye1 = 6, eye2 = 6, total = 0;
+    private List<int> highscores = new();
 
     protected override async Task OnInitializedAsync()
     {
         //initialize some parts
+        highscores.Add(51);
+        highscores.Add(20);
     }
 
     async void RollDices()
     {
         //roll the dices
+        hasSnakeEyes = true;
+        if (highscores.Count < 4)
+            highscores.Add(200);
+        else
+            highscores.Add(40);
     }
 
     async void Restart()
     {
         //restart the dices
+        hasSnakeEyes = false;
     }
 }
