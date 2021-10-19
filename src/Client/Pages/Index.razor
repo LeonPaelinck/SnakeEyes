@@ -1,24 +1,27 @@
 ﻿@page "/"
+@using Domain 
+
 
 <h1>Snake Eyes</h1>
 
 Roll the dices but don't get Snake Eyes!
 
-<Dice Pips="@eye1"/>
-<Dice Pips="@eye2"></Dice>
+<div>
+    <CDice Pips="@_game.Eye1" />
+    <CDice Pips="@_game.Eye2"></CDice>
+</div>
+<label>Total:</label> @_game.Total
 <br />
-<label>Total:</label> @total
-<br />
-<button @onclick="RollDices" disabled="@hasSnakeEyes">Roll</button>
+<button @onclick="RollDices" disabled="@_game.HasSnakeEyes">Roll</button>
 <h4>Highscores</h4>
 <ol>
-    @foreach (var score in @highscores.OrderByDescending(x => x))
+    @foreach (var score in _game.HighScores.OrderByDescending(x => x))
     {
         <li>@score</li>
     }
 </ol>
 
-@if (hasSnakeEyes)
+@if (@_game.HasSnakeEyes)
 {
     <button @onclick="Restart">Restart</button>
     <div class="alert alert-danger" role="alert">
@@ -28,30 +31,15 @@ Roll the dices but don't get Snake Eyes!
 
 
 @code {
-    private bool hasSnakeEyes = false;
-    private int eye1 = 6, eye2 = 6, total = 0;
-    private List<int> highscores = new();
-
-    protected override async Task OnInitializedAsync()
-    {
-        //initialize some parts
-        highscores.Add(51);
-        highscores.Add(20);
-    }
+    private Game _game = new Game();
 
     async void RollDices()
     {
-        //roll the dices
-        hasSnakeEyes = true;
-        if (highscores.Count < 4)
-            highscores.Add(200);
-        else
-            highscores.Add(40);
+        _game.Play();
     }
 
     async void Restart()
     {
-        //restart the dices
-        hasSnakeEyes = false;
+        _game.Restart();
     }
 }
